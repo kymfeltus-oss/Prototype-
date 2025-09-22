@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecuraFaith‑AI • ERP Prototype</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand:#0E3A75; --accent:#F3C12F; --bg:#F7F7F9; --card:#fff;
+      --muted:#6B7280; --text:#0f172a; --ok:#16a34a; --warn:#d97706; --danger:#b91c1c;
+      --border:#E5E7EB; --shadow:0 10px 25px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .app{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+    .sidebar{background:var(--brand);color:#fff;padding:24px;display:flex;flex-direction:column;gap:22px}
+    .logoRow{display:flex;align-items:center;gap:12px}
+    .logo{width:28px;height:28px;border-radius:8px;background:#0B2C56;display:grid;place-items:center}
+    .logo svg{width:16px;height:16px;fill:#fff}
+    .brandTitle{font-weight:800;font-size:20px}
+    .nav{display:flex;flex-direction:column;gap:8px}
+    .nav a{display:block;text-decoration:none;color:#cbd5e1;padding:12px 14px;border-radius:14px;font-weight:600;font-size:18px}
+    .nav a.active{background:var(--accent);color:#1f2937;box-shadow:var(--shadow)}
+    .nav a:hover{color:#fff}
+    .main{padding:28px 36px}
+    .topbar{display:flex;justify-content:center;align-items:center;margin-bottom:10px}
+    .churchName{font-weight:600;color:#334155}
+    h1{font-size:44px;margin:14px 0 18px}
+    h3{margin:0 0 10px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:22px}
+    .grid2{display:grid;gap:20px;grid-template-columns:1fr 1fr}
+    .grid3{display:grid;gap:20px;grid-template-columns:1fr 1fr}
+    .row{display:grid;gap:20px;grid-template-columns:1fr 1fr}
+    .tile{display:flex;gap:14px;align-items:center;padding:18px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer}
+    .tile:hover{box-shadow:var(--shadow)}
+    .muted{color:var(--muted)}
+    .btn{border:none;background:var(--accent);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#E5E7EB;color:#111827}
+    .input, select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;font-size:16px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px 14px;border-top:1px solid var(--border);text-align:left}
+    .pill{font-size:13px;padding:4px 9px;border-radius:999px;border:1px solid #e5e7eb;background:#f3f4f6;display:inline-block}
+    .status{display:flex;align-items:center;gap:8px}
+    .status .dot{width:10px;height:10px;border-radius:999px}
+    .subtle{background:#F9FAFB;border:1px solid var(--border);border-radius:12px;padding:14px}
+    .hidden{display:none}
+    .chart{width:100%;height:160px}
+    .week-labels{display:flex;gap:40px;font-weight:600;margin-top:6px;color:#475569}
+    @media (max-width:1000px){.app{grid-template-columns:1fr}.grid2,.grid3,.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logoRow">
+        <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5.25-3.125 9.906-8 11-4.875-1.094-8-5.75-8-11V5l8-3zM11 6v4H7v2h4v4h2v-4h4v-2h-4V6h-2z"/></svg></div>
+        <div class="brandTitle">SecuraFaith‑AI</div>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a data-view="dashboard" class="active">Dashboard</a>
+        <a data-view="gl">General Ledger</a>
+        <a data-view="comp-home">Compliance</a>
+        <a data-view="reporting">Reporting</a>
+        <a data-view="governance">Church Governance<br>Vault</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar"><div class="churchName">Feltus Temple Church of God In Christ</div></div>
+
+      <!-- DASHBOARD -->
+      <section id="view-dashboard">
+        <h1>Dashboard</h1>
+        <div class="grid2">
+          <div class="card">
+            <h3>Tithes and Offering (YTD)</h3>
+            <div style="display:flex;align-items:flex-end;gap:16px"><div style="font-size:40px;font-weight:800">$60,000</div></div>
+            <div class="chart">
+              <svg viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true" style="width:100%;height:160px;display:block">
+                <line x1="0" y1="140" x2="600" y2="140" stroke="#E5E7EB" stroke-width="2"></line>
+                <polyline fill="none" stroke="#F3C12F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                  points="0,120 120,128 240,140 360,130 480,128 600,118"></polyline>
+                <polyline fill="none" stroke="#193B89" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                  points="0,125 120,110 240,130 360,115 480,95 600,92"></polyline>
+              </svg>
+              <div class="week-labels"><span>Week 10</span><span>Week 11</span><span>Week 13</span><span>Week 14</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Expenses</h3>
+            <table>
+              <thead><tr><th>Expense</th><th>Amount</th><th>Due Date</th></tr></thead>
+              <tbody>
+                <tr><td>Mortgage</td><td>$1,500.00</td><td>April 30</td></tr>
+                <tr><td>Utilities</td><td>$250.00</td><td>May 5</td></tr>
+                <tr><td>Community Outreach</td><td>$300.00</td><td>May 5</td></tr>
+                <tr><td>Wi‑Fi and Tech</td><td>$120.00</td><td>May 5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:18px">
+          <div class="card">
+            <h3>Payroll</h3>
+            <div class="subtle">
+              <div style="display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:12px;margin-bottom:8px"><div style="font-weight:700">John Doe</div><div><span class="pill">Weekly</span></div><div class="muted">Minister</div></div>
+              <div style="display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:12px;margin-bottom:8px"><div style="font-weight:700">Jane Doe</div><div><span class="pill">Weekly</span></div><div class="muted">Lay Leader</div></div>
+              <div style="display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:12px"><div style="font-weight:700">Sam Jones</div><div><span class="pill">Weekly</span></div><div class="muted">Administrator</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Compliance</h3>
+            <div class="status"><span class="dot" style="background:var(--ok)"></span><span style="font-size:36px;font-weight:800">97%</span><span>on track</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GENERAL LEDGER HOME -->
+      <section id="view-gl" class="hidden">
+        <h1>General Ledger</h1>
+        <div class="grid2">
+          <div class="tile" data-view="gl-journal"><div><strong>Journal Entries</strong><div class="muted">Record and manage journal entries</div></div></div>
+          <div class="tile" data-view="gl-recon"><div><strong>Reconciliation</strong><div class="muted">Bank and credit card accounts</div></div></div>
+          <div class="tile" data-view="gl-reports"><div><strong>Reports</strong><div class="muted">Financial statements and reports</div></div></div>
+          <div class="tile" data-view="gl-funds"><div><strong>Fund Balances</strong><div class="muted">View balances for different funds</div></div></div>
+        </div>
+      </section>
+
+      <!-- GL: JOURNAL ENTRY -->
+      <section id="view-gl-journal" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>Journal Entry</h1><div><button class="btn secondary" data-view="gl">Back</button> <button class="btn">Save</button></div>
+        </div>
+        <div class="grid2">
+          <div class="card">
+            <div class="row" style="grid-template-columns:1fr 1fr">
+              <div><label class="muted">Date</label><input class="input" value="04/26/2024"/></div>
+              <div><label class="muted">Reference #</label><input class="input" placeholder=""/></div>
+            </div>
+            <div class="row" style="grid-template-columns:1fr 1fr">
+              <div><label class="muted">Fund</label><select class="input"><option>General</option><option>Missions</option><option>Building</option></select></div>
+              <div><label class="muted">Account</label><select class="input"><option>Utilities</option><option>Mortgage</option><option>Payroll</option></select></div>
+            </div>
+            <div class="row" style="grid-template-columns:1fr 1fr">
+              <div><label class="muted">Description</label><input class="input" value="April electric bill"/></div>
+              <div><label class="muted">Debits</label><input class="input" value="400.00"/></div>
+            </div>
+            <a class="muted" href="#">+ Add line</a>
+            <div style="margin-top:10px"><label class="muted">Memo</label><input class="input"/></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GL: RECONCILIATION -->
+      <section id="view-gl-recon" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>Reconciliation</h1><div><button class="btn secondary" data-view="gl">Back</button> <button class="btn">Confirm Reconcile</button></div>
+        </div>
+        <div class="grid2">
+          <div class="card">
+            <div class="row" style="grid-template-columns:1fr 1fr">
+              <div><label class="muted">Account</label><select class="input"><option>Operating Checking ****1234</option></select></div>
+              <div><label class="muted">Statement Period</label><input class="input" value="04/01/2024 – 04/30/2024"/></div>
+            </div>
+            <div style="margin:10px 0"><label class="muted">Statement Ending Balance</label><input class="input" value="8,500.00"/></div>
+            <div class="row">
+              <div class="subtle">
+                <div style="font-weight:800;margin-bottom:8px">Bank Transactions</div>
+                <table>
+                  <thead><tr><th>Date</th><th>Detail</th><th>Amount</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>04/20</td><td>Mortgage payment</td><td>-1,500.00</td><td>✓</td></tr>
+                    <tr><td>04/15</td><td>Deposit</td><td>2,000.00</td><td>✓</td></tr>
+                    <tr><td>04/10</td><td>Check #1101</td><td>-500.00</td><td>✓</td></tr>
+                  </tbody>
+                </table>
+                <div class="muted" style="margin-top:6px">Unmatched: None</div>
+              </div>
+              <div class="subtle">
+                <div style="font-weight:800;margin-bottom:8px">GL Entries</div>
+                <table>
+                  <thead><tr><th>Date</th><th>Detail</th><th>Amount</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>04/20</td><td>Mortgage payment</td><td>-1,500.00</td><td>✓</td></tr>
+                    <tr><td>04/15</td><td>Deposit</td><td>2,000.00</td><td>✓</td></tr>
+                    <tr><td>04/10</td><td>Check #1101</td><td>-500.00</td><td>✓</td></tr>
+                  </tbody>
+                </table>
+                <div class="muted" style="margin-top:6px">Unmatched: None</div>
+              </div>
+            </div>
+            <div class="subtle" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+              <div>Cleared Balance <b>9,000.00</b></div>
+              <div>Statement Balance <b>9,000.00</b></div>
+              <div>Difference <b>0.00</b></div>
+              <div>Auto match <span class="pill">On</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GL: REPORTS HUB + CONTRIBUTION STATEMENT -->
+      <section id="view-gl-reports" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>Reports</h1><div><button class="btn secondary" data-view="gl">Back</button></div>
+        </div>
+        <div class="grid2">
+          <div class="tile" data-view="report-contrib"><strong>Contribution Statement</strong></div>
+          <div class="tile"><strong>Donor Summary</strong></div>
+          <div class="tile"><strong>Fund Activity</strong></div>
+          <div class="tile"><strong>Donations by Fund</strong></div>
+          <div class="tile"><strong>Giving Analysis</strong></div>
+          <div class="tile"><strong>Attendance Report</strong></div>
+          <div class="tile"><strong>Income Report</strong></div>
+          <div class="tile"><strong>Expense Report</strong></div>
+        </div>
+      </section>
+
+      <section id="view-report-contrib" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>Contribution Statement</h1><div><button class="btn secondary" data-view="gl-reports">Back</button> <button class="btn">Print Statement</button> <button class="btn">Email Statement</button> <button class="btn secondary">Export</button></div>
+        </div>
+        <div class="card">
+          <div class="grid2">
+            <div><label class="muted">Select Date Range</label><input class="input" value="Jan 1, 2024 to Dec 31, 2024"/></div>
+            <div><label class="muted">Member</label><input class="input" value="John Doe"/></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <div style="font-weight:800;margin-bottom:10px">Member Details</div>
+          <div class="subtle" style="margin-bottom:10px">John Doe<br>12545<br>Nashville, TN 37211</div>
+          <table>
+            <thead><tr><th>Date</th><th>Contribution Type</th><th>Fund</th><th>Payment Method</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr><td>01/27/2024</td><td>Tithe</td><td>General</td><td>Check</td><td>$200.00</td></tr>
+              <tr><td>02/11/2024</td><td>Offering</td><td>Missions</td><td>Online</td><td>$50.00</td></tr>
+              <tr><td>03/15/2024</td><td>Special Gift</td><td>Building</td><td>Cash</td><td>$500.00</td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;justify-content:flex-end;margin-top:12px;font-size:20px"><b>$750.00</b></div>
+          <div class="grid2" style="margin-top:10px"><div>General $200.00<br>Missions $50.00</div><div>Building $500.00</div></div>
+          <div class="muted" style="margin-top:10px">No goods or services were provided in exchange for these contributions, other than intangible religious benefits.</div>
+        </div>
+      </section>
+
+      <!-- REPORTING (global) -->
+      <section id="view-reporting" class="hidden">
+        <h1>Reports</h1>
+        <div class="grid2">
+          <div class="tile" data-view="report-contrib"><strong>Contribution Statement</strong></div>
+          <div class="tile"><strong>Donor Summary</strong></div>
+          <div class="tile"><strong>Fund Activity</strong></div>
+          <div class="tile"><strong>Donations by Fund</strong></div>
+          <div class="tile"><strong>Giving Analysis</strong></div>
+          <div class="tile"><strong>Attendance Report</strong></div>
+          <div class="tile"><strong>Income Report</strong></div>
+          <div class="tile"><strong>Expense Report</strong></div>
+        </div>
+      </section>
+
+      <!-- COMPLIANCE HUB + SUBVIEWS -->
+      <section id="view-comp-home" class="hidden">
+        <h1>Compliance</h1>
+        <div class="grid2">
+          <div class="tile" data-view="comp-irs"><strong>IRS Filings</strong><div class="muted">Form 990, donor letters, housing allowance</div></div>
+          <div class="tile" data-view="comp-state"><strong>State Filings</strong><div class="muted">Charitable registration & sales tax</div></div>
+          <div class="tile" data-view="comp-deadlines"><strong>Deadlines</strong><div class="muted">Calendar with AI reminders</div></div>
+          <div class="tile" data-view="comp-alerts"><strong>AI Alerts</strong><div class="muted">Compliance gaps and actions</div></div>
+        </div>
+      </section>
+
+      <section id="view-comp-irs" class="hidden">
+        <div class="card subtle" style="margin-bottom:12px">
+          <div style="font-weight:800;color:#991B1B">AI Alerts</div>
+          <div><b>Urgent:</b> 6 gifts ≥ $250 missing acknowledgment letters • <b>Warning:</b> Housing allowance documentation incomplete</div>
+        </div>
+        <div class="card">
+          <h3>Compliance — IRS Compliance Issues</h3>
+          <table>
+            <thead><tr><th>Status</th><th>Issue Description</th><th>Impacted Area</th><th>AI Recommendation</th><th>AI Assistant</th></tr></thead>
+            <tbody>
+              <tr><td><span class="pill" style="background:#FEE2E2;border-color:#FCA5A5">Urgent</span></td><td>6 gifts ≥ $250 missing acknowledgement</td><td>Donor Records</td><td>Generate IRS‑compliant letters now</td><td><button class="btn">Generate Letters</button></td></tr>
+              <tr><td><span class="pill" style="background:#FEF3C7;border-color:#FCD34D">Warning</span></td><td>Housing allowance not documented</td><td>Payroll</td><td>Create housing allowance memo & attach to payroll</td><td><button class="btn secondary">Update Allowance</button></td></tr>
+              <tr><td><span class="pill" style="background:#DCFCE7;border-color:#86EFAC">Info</span></td><td>UBIT review complete</td><td>Facility Rentals</td><td>—</td><td><button class="btn secondary">Apply Quid Pro Quo Rule</button></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;justify-content:center;margin-top:14px"><button class="btn secondary">Download Compliance Audit Package</button></div>
+        </div>
+      </section>
+
+      <section id="view-comp-state" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>State Filings</h1><div><button class="btn">Upload Documents</button> <button class="btn">Auto‑Fill Packet</button></div>
+        </div>
+        <div class="row">
+          <div class="card">
+            <div class="row" style="grid-template-columns:1fr 1fr;margin-bottom:10px">
+              <select class="input"><option>Select State</option><option>Tennessee</option><option>Texas</option><option>Florida</option></select>
+              <select class="input"><option>All</option><option>Current</option><option>Expired</option><option>Expires Soon</option></select>
+            </div>
+            <table>
+              <thead><tr><th>State</th><th>Registration Status</th><th>Expiration Date</th></tr></thead>
+              <tbody>
+                <tr><td>Texas</td><td>Current</td><td>03/31/2025</td></tr>
+                <tr><td>Florida</td><td><span class="pill" style="background:#FEF3C7;border-color:#FCD34D">Expires Soon</span></td><td>08/15/2024</td></tr>
+                <tr><td>Tennessee</td><td style="color:var(--danger);font-weight:700">Expired</td><td>06/30/2024</td></tr>
+                <tr><td>New York</td><td style="color:var(--danger);font-weight:700">Expired</td><td>11/30/2023</td></tr>
+                <tr><td><i>Add State</i></td><td>Renew</td><td>Download Packet</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div style="font-weight:800;margin-bottom:8px">AI Reminders</div>
+            <div class="subtle">Tennessee registration renewal is overdue</div>
+            <div style="height:10px"></div>
+            <div style="font-weight:800;margin-bottom:8px">Upcoming Deadlines</div>
+            <div class="subtle">
+              <div style="text-align:center;font-weight:700;margin-bottom:6px">July 2024</div>
+              <table style="width:100%;text-align:center">
+                <thead><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead>
+                <tbody>
+                  <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+                  <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+                  <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+                  <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+                  <tr><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td><td></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-comp-deadlines" class="hidden">
+        <div class="headerRow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h1>Compliance — Deadlines & Reminders</h1><div><button class="btn secondary">Download Compliance Audit Package</button></div>
+        </div>
+        <div class="row">
+          <div class="card">
+            <div class="subtle" style="margin-bottom:10px"><b>AI Alerts</b> — Review address compliance issues detected by AI</div>
+            <div class="subtle" style="margin-bottom:10px;display:flex;gap:8px"><span class="pill">IRS</span><span class="pill">State</span><span class="pill">Governance</span></div>
+            <table>
+              <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+              <tbody>
+                <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+                <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+                <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+                <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+                <tr><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div style="font-weight:800;margin-bottom:8px">AI Assistant</div>
+            <div class="subtle" style="margin-bottom:10px">Would you like me to start the 990 now?</div>
+            <table>
+              <thead><tr><th>Deadline</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td>Form 990 (FY 2024) — 30 days</td><td><a href="#" onclick="show('comp-irs')">Start Filing</a></td></tr>
+                <tr><td>Charitable Registration — Alabama</td><td><a href="#" onclick="show('comp-state')">File Renewal</a></td></tr>
+                <tr><td>Renewal Packet</td><td><a href="#" onclick="show('comp-state')">File Renewal</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-comp-alerts" class="hidden">
+        <h1>AI Alerts</h1>
+        <div class="grid2">
+          <div class="card"><h3>Financial Anomalies</h3><div class="subtle"><span class="pill" style="background:#FEE2E2;border-color:#FCA5A5">URGENT</span> 2 restricted funds misused<br><span class="pill" style="background:#FEE2E2;border-color:#FCA5A5">URGENT</span> Duplicate entry detected<br><span class="pill" style="background:#FEF3C7;border-color:#FCD34D">WARNING</span> Unusual expense activity</div><div style="text-align:right;margin-top:10px"><button class="btn">Resolve</button></div></div>
+          <div class="card"><h3>IRS Compliance Issues</h3><div class="subtle"><span class="pill" style="background:#FEE2E2;border-color:#FCA5A5">URGENT</span> 6 gifts over $250 lack acknowledgements<br><span class="pill" style="background:#FEF3C7;border-color:#FCD34D">WARNING</span> Unusing allowance error<br><span class="pill" style="background:#DCFCE7;border-color:#86EFAC">OK</span> Unrelated business income risk</div><div style="text-align:right;margin-top:10px"><button class="btn">Resolve</button></div></div>
+        </div>
+      </section>
+
+      <!-- GOVERNANCE placeholder -->
+      <section id="view-governance" class="hidden">
+        <h1>Church Governance Vault</h1>
+        <div class="card">Governance content placeholder</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const views = {
+      dashboard: document.getElementById('view-dashboard'),
+      gl: document.getElementById('view-gl'),
+      'gl-journal': document.getElementById('view-gl-journal'),
+      'gl-recon': document.getElementById('view-gl-recon'),
+      'gl-reports': document.getElementById('view-gl-reports'),
+      'report-contrib': document.getElementById('view-report-contrib'),
+      reporting: document.getElementById('view-reporting'),
+      'comp-home': document.getElementById('view-comp-home'),
+      'comp-irs': document.getElementById('view-comp-irs'),
+      'comp-state': document.getElementById('view-comp-state'),
+      'comp-deadlines': document.getElementById('view-comp-deadlines'),
+      'comp-alerts': document.getElementById('view-comp-alerts'),
+      governance: document.getElementById('view-governance'),
+    };
+
+    function show(viewKey){
+      Object.values(views).forEach(v=>v.classList.add('hidden'));
+      (views[viewKey]||views.dashboard).classList.remove('hidden');
+      document.querySelectorAll('.nav a').forEach(a=>{
+        const key = a.dataset.view;
+        const active = key===viewKey
+          || (viewKey.startsWith('gl') && key==='gl')
+          || (viewKey.startsWith('report') && key==='reporting')
+          || (viewKey.startsWith('comp-') && key==='comp-home');
+        a.classList.toggle('active', active);
+      });
+      location.hash = '#'+viewKey;
+      window.scrollTo({top:0,behavior:'auto'});
+    }
+
+    document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>show(a.dataset.view)));
+    document.querySelectorAll('[data-view]').forEach(el=>{
+      if(!el.classList.contains('nav')) el.addEventListener('click',()=>{
+        const key = el.getAttribute('data-view'); if(key && views[key]) show(key);
+      });
+    });
+    window.addEventListener('load', ()=>show((location.hash||'#dashboard').slice(1)));
+  </script>
+</body>
+</html>
